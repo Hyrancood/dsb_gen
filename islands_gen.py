@@ -43,7 +43,9 @@ for count in range(1):
             create_circle(arr,(x_center,y_center),rad,alf,alf_step,spread,img,output_arr)
     #После отрисовки всех колец задаем им размер
     give_size(output_arr,img)
-    add_high_islands(output_arr)
+    #Добавление разных высот
+    add_diffenent_heights(output_arr)
+
     print(len(output_arr), "всего")
     print([x[1] in range(150,300) for x in output_arr].count(True), "высоких")
     print([x[1] in range(-60, 20) for x in output_arr].count(True), "низких")
