@@ -17,12 +17,12 @@ for count in range(1):
     output_arr = []
     #Файл для сохранения
     file_list = open(fr'C:\Users\Максим\Desktop\SkyBlock\шаблоны генерации\шаблоны островов\функции\{count}.mcfunction', 'w', encoding='utf-8')
-    while not(285 <= len(output_arr) <= 350):
+    while (len(output_arr) <= 350):
         output_arr = []
         new_img = Image.new("RGBA", (len(arr), len(arr)), "black")
         img = ImageDraw.Draw(new_img)
         rad = 0
-        for x in range(14): #кол-во колец
+        for x in range(16): #кол-во колец
             #шаг угла
             alf = randint(-20, 35)
 
@@ -33,12 +33,12 @@ for count in range(1):
             elif x<6:
                 alf_step = (max(45 - int(x**2.5), 12), 70 - x*2)
                 spread = (-15 - x**2, 15 + x**2)
-                rad += randint(75, 100) + randint(x * 5, max(int(x ** 2.8), x * 5 + 3))
-            elif x<14:
+                rad += randint(65, 70) + randint(x * 3, max(int(x ** 2), x * 5 + 3))
+            else:
                 alf = randint(-10, 40)
-                alf_step = (30 - x*2,60 - int(x*4))
-                spread = (-40 - x*4,40 + x*4)
-                rad += randint(80, 90) + randint(x * 5, max(int(x ** 2.5), x * 5 + 3))
+                alf_step = (30 - x*2, max(60 - int(x*4), 9))
+                spread = (-40 - x*4, 40 + x*4)
+                rad += randint(80, 90) + randint(x * 4, max(int(x ** 2.2), x * 5 + 3))
             #Рисует кольцо с заданным параметрами
             create_circle(arr,(x_center,y_center),rad,alf,alf_step,spread,img,output_arr)
     #После отрисовки всех колец задаем им размер
@@ -46,8 +46,8 @@ for count in range(1):
     #Добавление разных высот
     add_diffenent_heights(output_arr)
 
-    print(len(output_arr), "всего")
-    print([x[1] in range(150,300) for x in output_arr].count(True), "высоких")
+    print(len(output_arr), "всего", end=" ")
+    print([x[1] in range(150,300) for x in output_arr].count(True), "высоких", end=" ")
     print([x[1] in range(-60, 20) for x in output_arr].count(True), "низких")
 
 

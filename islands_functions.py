@@ -4,7 +4,7 @@ from PIL import Image,ImageDraw
 
 #Базовая высота
 def base_height():
-    return randint(48, 55)
+    return randint(48, 68)
 
 """
 arr список для визуальной картинки расположения. alf начальный угол, alf_step шаг угла. 
@@ -148,14 +148,14 @@ def give_size(arr: list, image):
                         size = 1
                         break
 
-        # Если остров средний, то в радиусе 10 блоков не должно быть никаких островов
+        # Если остров средний, то в радиусе 20 блоков не должно быть никаких островов
         if size == 1:
-            range_x = list(range(cur_x - 10, cur_x + 11))
-            range_z = list(range(cur_z - 10, cur_z + 11))
+            range_x = list(range(cur_x - 20, cur_x + 21))
+            range_z = list(range(cur_z - 20, cur_z + 21))
             for cur in arr:
                 if cur[0] in range_x and cur[2] in range_z:  # Если нашелся остров в этом квадрате
                     if cur[0] != cur_x and cur[2] != cur_z:  # При этом его координаты не равны исходному
-                        size = 1
+                        size = 0
                         break
 
         #Задаем размер
@@ -180,6 +180,6 @@ def add_diffenent_heights(arr: list):
     for current in range(len(arr)):
         size = arr[current][-1]
         if size in [1,2]:
-            chance = randint(0,99) #9% что опуститься вниз, 11% что поднимется вверх
+            chance = randint(0,99) #9% что опуститься вниз, 6% что поднимется вверх
             if chance < 9: to_down(arr, current)
-            elif chance < 20: to_up(arr, current)
+            elif chance < 15: to_up(arr, current)
