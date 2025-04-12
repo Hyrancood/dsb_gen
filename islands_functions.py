@@ -3,8 +3,9 @@ from random import randint
 from PIL import Image,ImageDraw
 
 #Базовая высота
+b_h = [48,68]
 def base_height():
-    return randint(48, 68)
+    return randint(b_h[0], b_h[1])
 
 """
 arr список для визуальной картинки расположения. alf начальный угол, alf_step шаг угла. 
@@ -95,7 +96,6 @@ dic_colors = {
     0: (255,255,255), #Маленький
     1: (35,255,30), #Средний
     2: (0,255,240), #Большой
-    # 3: (20,0,255), #Огромный
     101: (224,34,208),
     102: (246,255,0),
     103: (255,126,0),
@@ -110,18 +110,6 @@ def give_size(arr: list, image):
     quests = [cur for cur in arr if 80 <= (cur[0]**2 + cur[2]**2)**0.5 <= 160]
     index = randint(0, len(quests)-1)
     quests[index][3] = 101
-    # #Морской царь
-    # quests = [cur for cur in arr if 500 <= (cur[0] ** 2 + cur[2] ** 2) ** 0.5 <= 650]
-    # index = randint(0, len(quests) - 1)
-    # quests[index][3] = 102
-    # #Песчаная библиотека
-    # quests = [cur for cur in arr if 830 <= (cur[0] ** 2 + cur[2] ** 2) ** 0.5 <= 920]
-    # index = randint(0, len(quests) - 1)
-    # quests[index][3] = 103
-    # #Элеум Лойс
-    # quests = [cur for cur in arr if 1430 <= (cur[0] ** 2 + cur[2] ** 2) ** 0.5 <= 1700]
-    # index = randint(0, len(quests) - 1)
-    # quests[index][3] = 104
 
 
     for cur_island in range(len(arr)):
@@ -165,6 +153,17 @@ def give_size(arr: list, image):
         for x in range(cur_x - 4, cur_x + 5):
             for y in range(cur_z - 4, cur_z + 5):
                 image.point((x + 2047, y + 2047), fill=dic_colors[size])
+
+    #Морской царь
+    quests = [cur for cur in arr if (450 <= (cur[0] ** 2 + cur[2] ** 2) ** 0.5 <= 700) and (b_h[0] <= cur[1] <= b_h[1])]
+    for x in quests: x[-1]+=200
+    #Песчаная библиотека
+    quests = [cur for cur in arr if (800 <= (cur[0] ** 2 + cur[2] ** 2) ** 0.5 <= 1200) and (b_h[0] <= cur[1] <= b_h[1])]
+    for x in quests: x[-1]+=300
+    #Элеум Лойс
+    quests = [cur for cur in arr if (1400 <= (cur[0] ** 2 + cur[2] ** 2) ** 0.5 <= 1800) and (b_h[0] <= cur[1] <= b_h[1])]
+    for x in quests: x[-1]+=400
+
 
 def to_down(arr: list, current_index: int):
     if randint(0, 2) < 2:  # 2/3 на то что будет остров (структура) на -55
