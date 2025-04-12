@@ -2,6 +2,13 @@ import math
 from random import randint
 from PIL import Image,ImageDraw
 
+
+def get_height(noise_heightmap, x, y):
+    h = noise_heightmap[int(2047 + x)//16, int(2047 + y)//16]
+    m, h = 1 if h >= 0 else -1, abs(h)
+    print(int(x), int(y), h, int(58 + m * math.tan((math.pi *h)/2)*math.exp(h)*(15/(1 + math.exp(-h)))))
+    return min(200, max(-60, int(58 + m * math.tan((math.pi *h)/2)*math.exp(h)*(15/(1 + math.exp(-h))))))
+
 #Базовая высота
 def base_height():
     return randint(48, 68)
@@ -11,7 +18,7 @@ arr список для визуальной картинки расположе
 spread это разброс островов (ближе - дальше к центру), чтобы они не были четко на линии окружности
 output_arr итоговый список с координатами островов
 """
-def create_circle(arr: list,center: tuple,rad: int,alf: int,alf_step: tuple,spread: tuple, image,output_arr):
+def create_circle(arr: list,center: tuple,rad: int,alf: int,alf_step: tuple,spread: tuple, heightmap, image,output_arr):
 
     #зеленые полосы
     for x in range(628): #628, потому что длина окружности 2пи, 6,28 * 100 масштаб
@@ -24,7 +31,7 @@ def create_circle(arr: list,center: tuple,rad: int,alf: int,alf_step: tuple,spre
             continue
 
     #Обход окружности
-    while (alf < 628 - alf_step[1]*0.8):
+    while alf < 628 - alf_step[1]*0.8:
         #точка со случайным смещением ближе/дальше от центра spread)
         x = rad * math.sin(alf / 100) + center[0] + randint(spread[0], spread[1])
         y = rad * math.cos(alf / 100) + center[1] + randint(spread[0], spread[1])
@@ -47,20 +54,21 @@ def create_circle(arr: list,center: tuple,rad: int,alf: int,alf_step: tuple,spre
             distance = ( x**2 + y**2 )**0.5
             if distance <= 150: #Только мелкие
                 output_arr[-1].append(0)
-                output_arr[-1][1] = base_height()
+                output_arr[-1][1] = get_height(heightmap, x, y)
 
             elif distance <= 250: #Мелкие и средние
                 output_arr[-1].append(1)
-                output_arr[-1][1] = base_height()
+                output_arr[-1][1] = get_height(heightmap, x, y)
 
             elif distance <= 500: #Мелкие, средние и большие (шанс меньше)
                 output_arr[-1].append(2)
-                output_arr[-1][1] = base_height()
+                output_arr[-1][1] = get_height(heightmap, x, y)
 
             else:
                 output_arr[-1].append(3)
-                output_arr[-1][1] = base_height()
-        except:
+                output_arr[-1][1] = get_height(heightmap, x, y)
+        except Exception as e:
+            print(f"Ошибка: {e} на координатах x: {int(x)} y: {int(y)}")
             continue
 
 
