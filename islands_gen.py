@@ -30,7 +30,7 @@ def draw_heightmap(img, heightmap, img_size=4096):
 
 #Составить список с координатами островов
 
-for count in range(4, 6):
+for count in range(7):
     heightmap = generate_heightmap(256, 35, 237*7-count*13) #TODO: возможно стоит сменить способ генерации сида
     #Для рисовки островов визуально
     arr = [[0 for __ in range(4096)] for _ in range(4096)]
